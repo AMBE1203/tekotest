@@ -14,18 +14,82 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.app.Activity
 import android.annotation.TargetApi
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.support.v4.content.ContextCompat
+import android.opengl.ETC1.getWidth
+import android.support.design.widget.Snackbar
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.MotionEvent
+import android.widget.RelativeLayout
+import android.widget.PopupWindow
+import com.ambe.tekotest.helper.Const
+import com.ambe.tekotest.helper.State
+import com.ambe.tekotest.helper.Utils
+import kotlinx.android.synthetic.main.fragment_product_list.*
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 
 class ProductListFragment : BaseFragment() {
+
+    private lateinit var viewModel: ProductsListViewModel
+    private lateinit var adapter: ProductsListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        setStatusBarGradiant(activity!!)
+        setStatusBarGradiant(activity!! as Activity)
         return inflater.inflate(R.layout.fragment_product_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(ProductsListViewModel::class.java)
+        setupUI()
+        initState()
+    }
+
+    private fun setupUI() {
+
+        if (!Utils.checkInternetConnection(context!!)) {
+            Snackbar.make(
+                activity!!.findViewById(android.R.id.content),
+                Const.CHECK_NETWORK_ERROR,
+                Snackbar.LENGTH_SHORT
+            )
+                .show()
+        }
+
+
+        adapter = ProductsListAdapter { viewModel.retry() }
+        rcv_product.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rcv_product.adapter = adapter
+        viewModel.productsList.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+
+                adapter.submitList(it)
+            }
+        })
+    }
+
+    private fun initState() {
+        txt_error.setOnClickListener { viewModel.retry() }
+        viewModel.getState().observe(this, Observer { state ->
+            progress_bar.visibility =
+                if (viewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE else View.GONE
+            txt_error.visibility =
+                if (viewModel.listIsEmpty() && state == State.ERROR) View.VISIBLE else View.GONE
+            if (!viewModel.listIsEmpty()) {
+                adapter.setState(state ?: State.DONE)
+            }
+        })
     }
 
 
