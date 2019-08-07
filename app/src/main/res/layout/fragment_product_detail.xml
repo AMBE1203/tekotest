@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.detail.ProductDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/tb_product_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <com.ambe.tekotest.ui.view.ImageAnimClick
+            android:id="@+id/img_back"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@drawable/arrow_back_black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/lnl_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/img_back"
+            app:layout_constraintRight_toLeftOf="@id/rll_store"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txt_name_detail"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                android:textColor="@color/colorBlack"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/txt_price_detail"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="10.420.000 đ"
+                android:textColor="@color/colorRed"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rll_store"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.ambe.tekotest.ui.view.ImageAnimClick
+                android:layout_width="32dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:src="@drawable/cart_out_lined" />
+
+            <TextView
+                android:id="@+id/txt_cout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_store"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#BEBDBD"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_product_detail" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_product_detail">
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,12 +1,15 @@
 package com.ambe.tekotest.ui.list
 
 import android.arch.paging.PagedListAdapter
+import android.support.v4.text.HtmlCompat
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import com.ambe.tekotest.R
 import com.ambe.tekotest.helper.State
 import com.ambe.tekotest.model.Products
@@ -25,22 +28,27 @@ class ProductsListAdapter(private val retry: () -> Unit) :
     private var state = State.LOADING
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == Companion.DATA_VIEW_TYPE) ProductsViewHolder.create(parent) else ListFooterViewHolder.create(
+        return if (viewType == DATA_VIEW_TYPE) ProductsViewHolder.create(parent) else ListFooterViewHolder.create(
             retry,
             parent
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == Companion.DATA_VIEW_TYPE) {
+        if (getItemViewType(position) == DATA_VIEW_TYPE) {
             (holder as ProductsViewHolder).bind(getItem(position))
+            holder.itemView.setOnClickListener {
+                if (iProductsListAdapterListner != null) {
+                    iProductsListAdapterListner?.clickItem(getItem(position))
+                }
+            }
         } else {
             (holder as ListFooterViewHolder).bind(state)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position < super.getItemCount()) Companion.DATA_VIEW_TYPE else Companion.FOOTER_VIEW_TYPE
+        return if (position < super.getItemCount()) DATA_VIEW_TYPE else FOOTER_VIEW_TYPE
     }
 
     override fun getItemCount(): Int {
@@ -76,8 +84,8 @@ class ProductsListAdapter(private val retry: () -> Unit) :
 
         fun bind(status: State?) {
             itemView.progress_bar.visibility =
-                if (status == State.LOADING) VISIBLE else View.INVISIBLE
-            itemView.txt_error.visibility = if (status == State.ERROR) VISIBLE else View.INVISIBLE
+                if (status == State.LOADING) VISIBLE else INVISIBLE
+            itemView.txt_error.visibility = if (status == State.ERROR) VISIBLE else INVISIBLE
         }
 
         companion object {
@@ -104,25 +112,61 @@ class ProductsListAdapter(private val retry: () -> Unit) :
                 }
 
                 if (products.images.isNotEmpty()) {
-
                     Glide.with(itemView.context).load(products.images[products.images.size - 1].url)
                         .centerCrop()
                         .into(itemView.img_product)
                 }
 
-
-                if (products.price.supplierSalePrice == products.price.sellPrice) {
-                    itemView.txt_product_price_old.visibility = View.INVISIBLE
-                    itemView.txt_per_sale.visibility = View.INVISIBLE
+                if (products.objective.code == "gift") {
+                    hideView(itemView.lnl_price_old, itemView.txt_unit)
                     itemView.txt_product_price.text =
-                        formatter.format(products.price.supplierSalePrice)
+                        itemView.context.getString(R.string.hang_qua_tang)
+
                 } else {
-                    itemView.txt_product_price_old.visibility = View.INVISIBLE
-                    itemView.txt_per_sale.visibility = View.INVISIBLE
+
+                    if (products.status.sale == "ngung_kinh_doanh") {
+                        hideView(itemView.lnl_price_old, itemView.txt_unit)
+
+                        itemView.txt_product_price.text =
+                            itemView.context.getString(R.string.nguong_kinh_doanh)
+
+                    } else {
+                        itemView.txt_unit.visibility = VISIBLE
+
+
+                        if (products.price.supplierSalePrice == products.price.sellPrice) {
+                            itemView.lnl_price_old.visibility = INVISIBLE
+
+                            itemView.txt_product_price.text =
+                                formatter.format(products.price.supplierSalePrice)
+
+                        } else {
+                            itemView.lnl_price_old.visibility = VISIBLE
+
+                            itemView.txt_product_price.text =
+                                formatter.format(products.price.sellPrice)
+                            itemView.txt_product_price_old.text =
+                                HtmlCompat.fromHtml(
+                                    "<strike>${formatter.format(products.price.supplierSalePrice)}</strike>",
+                                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                                )
+                            val per =
+                                (products.price.sellPrice - products.price.supplierSalePrice) * 100 / products.price.supplierSalePrice
+                            itemView.txt_per_sale.text = "$per%"
+
+                        }
+                    }
                 }
+
 
             }
         }
+
+        private fun hideView(txt1: View, txt2: View) {
+            txt1.visibility = INVISIBLE
+            txt2.visibility = INVISIBLE
+        }
+
 
         companion object {
             fun create(parent: ViewGroup): ProductsViewHolder {
@@ -131,5 +175,15 @@ class ProductsListAdapter(private val retry: () -> Unit) :
                 return ProductsViewHolder(view)
             }
         }
+    }
+
+    private var iProductsListAdapterListner: IProductsListAdapterListner? = null
+
+    fun setListener(i: IProductsListAdapterListner) {
+        this.iProductsListAdapterListner = i
+    }
+
+    interface IProductsListAdapterListner {
+        fun clickItem(products: Products?)
     }
 }

@@ -9,4 +9,6 @@ object Const {
 
     const val CHECK_NETWORK_ERROR = "Check your network connection."
 
+    const val PRODUCT = "product"
+
 }
