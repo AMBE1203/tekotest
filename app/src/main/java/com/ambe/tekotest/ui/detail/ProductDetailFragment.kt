@@ -3,24 +3,16 @@ package com.ambe.tekotest.ui.detail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ambe.tekotest.BaseFragment
-
 import com.ambe.tekotest.R
-import com.ambe.tekotest.helper.Utils
-import com.ambe.tekotest.model.Products
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_product_detail.*
-import kotlinx.android.synthetic.main.item_product.view.*
-import android.support.v4.content.ContextCompat
-import android.view.WindowManager
 import com.ambe.tekotest.helper.Utils.setStatusBarGradient
+import com.ambe.tekotest.model.Products
+import kotlinx.android.synthetic.main.fragment_product_detail.*
+import java.lang.Exception
 
 
 class ProductDetailFragment : BaseFragment() {
@@ -28,6 +20,7 @@ class ProductDetailFragment : BaseFragment() {
     private val TAG = ProductDetailFragment::class.java.simpleName
 
     private lateinit var productViewModel: ProductViewModel
+    private lateinit var previewAdapter: PreviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,9 +46,21 @@ class ProductDetailFragment : BaseFragment() {
     private fun setupUI(products: Products) {
         if (products.displayName != "") {
             txt_name_detail.text = products.displayName
+            txt_title_detail.text = products.displayName
         } else {
             txt_name_detail.text = products.name
+            txt_title_detail.text = products.name
 
+        }
+
+        txt_ma_sp.text = products.sku
+
+        previewAdapter = PreviewAdapter(context!!, products.images)
+        viewPager.adapter = previewAdapter
+        try {
+            indicator.setViewPager(viewPager)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

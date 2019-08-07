@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/txt_name_detail"
+                android:id="@+id/txt_title_detail"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -93,7 +93,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#BEBDBD"
+        android:background="#E0E0E0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_product_detail" />
@@ -105,6 +105,144 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_product_detail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="24dp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/indicator" />
+
+                <com.ambe.tekotest.ui.view.indicatorlibrary.IndicatorView
+                    android:id="@+id/indicator"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    app:hado_color_selected="@color/colorRed"
+                    app:hado_color_unselected="@color/colorGray"
+                    app:hado_radius_selected="10dp"
+                    app:hado_radius_unselected="5dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E0E0E0" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="22dp"
+                android:background="@color/colorWhite"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_name_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Bộ vi xử lý"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mã SP:"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:id="@+id/txt_ma_sp"
+                        android:text="9187691276"
+                        android:textColor="#2676F2"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="92dp"
+                    android:layout_height="22dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_da_het_hang"
+                    android:gravity="center"
+                    android:text="Tạm hết hàng"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10.420.000"
+                        android:textColor="@color/colorRed"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:text="đ"
+                        android:textColor="@color/colorRed"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="10.420.000"
+                        android:textSize="17sp" />
+                    <TextView
+                        android:layout_width="32dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_sale"
+                        android:gravity="center"
+                        android:text="- 20%"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="#E0E0E0" />
+        </LinearLayout>
 
     </ScrollView>
 

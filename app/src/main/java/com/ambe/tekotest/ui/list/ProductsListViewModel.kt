@@ -1,10 +1,13 @@
 package com.ambe.tekotest.ui.list
 
+import android.app.Application
+import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
+import android.content.Context
 import com.ambe.tekotest.datasource.ProductsDataSource
 import com.ambe.tekotest.datasource.ProductsDataSourceFactory
 import com.ambe.tekotest.helper.State
@@ -15,9 +18,9 @@ import io.reactivex.disposables.CompositeDisposable
 /**
  *  Created by AMBE on 6/8/2019 at 14:13 PM.
  */
-class ProductsListViewModel : ViewModel() {
+class ProductsListViewModel(aplication: Application) : AndroidViewModel(aplication) {
 
-    private val networkService = NetworkService.getService()
+    private val networkService = NetworkService.getService(aplication)
 
     var productsList: LiveData<PagedList<Products>>
 
@@ -34,7 +37,8 @@ class ProductsListViewModel : ViewModel() {
             .setEnablePlaceholders(false) //để là true nếu muốn PagedList hiển thị cả những item null, không được load đầy đủ.
             .build()
 
-        productsList = LivePagedListBuilder<Int, Products>(productsDataSourceFactory, config).build()
+        productsList =
+            LivePagedListBuilder<Int, Products>(productsDataSourceFactory, config).build()
     }
 
     fun getState(): LiveData<State> = Transformations.switchMap<ProductsDataSource,
