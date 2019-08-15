@@ -1,6 +1,7 @@
 package com.ambe.tekotest.interfaces
 
 import android.content.Context
+import android.util.Log
 import com.ambe.tekotest.BuildConfig
 import com.ambe.tekotest.helper.Const
 import com.ambe.tekotest.helper.Utils
@@ -26,6 +27,7 @@ interface NetworkService {
 
     companion object {
         fun getService(context: Context): NetworkService {
+
             val cacheSize = (5 * 1024 * 1024).toLong()
             val myCache = Cache(context.cacheDir, cacheSize)
 
@@ -34,7 +36,8 @@ interface NetworkService {
                 .addInterceptor { chain ->
                     var request = chain.request()
                     request = if (Utils.checkInternetConnection(context))
-                        request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build()
+                        request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build() //      .header("Authorization", "Bearer " + token)
+
                     else
                         request.newBuilder().header(
                             "Cache-Control",
