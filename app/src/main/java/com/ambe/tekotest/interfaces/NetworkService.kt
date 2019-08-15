@@ -44,6 +44,12 @@ interface NetworkService {
                 }
                 .build()
 
+//            val logging = HttpLoggingInterceptor()
+//            logging.level = HttpLoggingInterceptor.Level.BODY
+//
+//            val okHttpClient = OkHttpClient.Builder()
+//            okHttpClient.addInterceptor(logging)
+
             val retrofit = Retrofit.Builder()
                 .baseUrl(Const.BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

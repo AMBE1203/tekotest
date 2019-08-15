@@ -24,6 +24,7 @@ class ProductsDataSource(
     var state: MutableLiveData<State> = MutableLiveData()
     private var retryCompletable: Completable? = null
 
+    // https://github.com/DongHien0896/Traning-Kotlin
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,

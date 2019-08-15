@@ -85,13 +85,16 @@ public class IndicatorView extends View implements IndicatorInterface, ViewPager
 
         int d = distance + 2 * radiusUnselected;
 
-        float firstXCenter = (getWidth() / 2) - ((dots.length - 1) * d / 2);
+        if (dots != null) {
 
-        for (int i = 0; i < dots.length; i++) {
-            dots[i].setCenter(i == 0 ? firstXCenter : firstXCenter + d * i, yCenter);
-            dots[i].setCurrentRadius(i == currentPosition ? radiusSelected : radiusUnselected);
-            dots[i].setColor(i == currentPosition ? colorSelected : colorUnselected);
-            dots[i].setAlpha(i == currentPosition ? 255 : radiusUnselected * 255 / radiusSelected);
+            float firstXCenter = (getWidth() / 2) - ((dots.length - 1) * d / 2);
+
+            for (int i = 0; i < dots.length; i++) {
+                dots[i].setCenter(i == 0 ? firstXCenter : firstXCenter + d * i, yCenter);
+                dots[i].setCurrentRadius(i == currentPosition ? radiusSelected : radiusUnselected);
+                dots[i].setColor(i == currentPosition ? colorSelected : colorUnselected);
+                dots[i].setAlpha(i == currentPosition ? 255 : radiusUnselected * 255 / radiusSelected);
+            }
         }
     }
 
@@ -128,8 +131,10 @@ public class IndicatorView extends View implements IndicatorInterface, ViewPager
 
     @Override
     protected void onDraw(Canvas canvas) {
-        for (Dot dot : dots) {
-            dot.draw(canvas);
+        if (dots != null) {
+            for (Dot dot : dots) {
+                dot.draw(canvas);
+            }
         }
     }
 
